@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EscapeX</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="game-container">
+
+        <header class="hud">
+            <div class="logo">ESCAPE<span>X</span></div>
+
+            <div class="stats">
+                <div>
+                    <small>TIME</small>
+                    <strong id="timer">00:00</strong>
+                </div>
+
+                <div>
+                    <small>LEVEL</small>
+                    <strong id="level">01</strong>
+                </div>
+
+                <div>
+                    <small>STATUS</small>
+                    <strong id="status">READY</strong>
+                </div>
+            </div>
+        </header>
+
+        <main class="game-area">
+
+            <div class="game-header">
+                <div>
+                    <h1>ESCAPE THE HUNT</h1>
+                    <p>Reach the exit before the AI catches you.</p>
+                </div>
+
+                <div class="ai-status">
+                    <span class="status-dot"></span>
+                    AI ONLINE
+                </div>
+            </div>
+
+            <div id="game-board" class="game-board">
+
+                <div class="player">
+                    <div class="player-head"></div>
+                    <div class="player-body"></div>
+                </div>
+
+                <div class="enemy">
+                    <div class="enemy-eye"></div>
+                </div>
+
+                <div class="exit">
+                    EXIT
+                </div>
+
+            </div>
+
+            <div class="controls">
+
+                <div>
+                    <span>W A S D</span>
+                    <small>MOVE</small>
+                </div>
+
+                <div>
+                    <span>SPACE</span>
+                    <small>JUMP</small>
+                </div>
+
+                <div>
+                    <span>C</span>
+                    <small>CROUCH</small>
+                </div>
+
+                <div>
+                    <span>SHIFT</span>
+                    <small>SPRINT</small>
+                </div>
+
+                <div>
+                    <span>P</span>
+                    <small>PAUSE</small>
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script src="js/game.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,424 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 20%, #16213a 0%, #080b12 45%, #030407 100%);
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow: hidden;
+}
+
+.game-container {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================
+   HUD
+========================= */
+
+.hud {
+    height: 80px;
+    padding: 0 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: rgba(8, 11, 18, 0.92);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: 900;
+    letter-spacing: 3px;
+}
+
+.logo span {
+    color: #00e5ff;
+}
+
+.stats {
+    display: flex;
+    gap: 45px;
+}
+
+.stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stats small {
+    color: #7f8ca8;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.stats strong {
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   GAME AREA
+========================= */
+
+.game-area {
+    flex: 1;
+    padding: 25px 35px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.game-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 20px;
+}
+
+.game-header h1 {
+    font-size: 25px;
+    letter-spacing: 2px;
+}
+
+.game-header p {
+    margin-top: 6px;
+    color: #7f8ca8;
+    font-size: 14px;
+}
+
+.ai-status {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 10px 15px;
+
+    border: 1px solid rgba(0, 229, 255, 0.25);
+    border-radius: 8px;
+
+    color: #00e5ff;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+
+    background: rgba(0, 229, 255, 0.05);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: #00e5ff;
+
+    box-shadow: 0 0 12px #00e5ff;
+
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* =========================
+   GAME BOARD
+========================= */
+
+.game-board {
+    position: relative;
+
+    flex: 1;
+
+    min-height: 450px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,0.025) 1px,
+            transparent 1px
+        ),
+        #080d16;
+
+    background-size: 40px 40px;
+
+    border: 1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        inset 0 0 80px rgba(0,0,0,0.7),
+        0 20px 60px rgba(0,0,0,0.4);
+
+    overflow: hidden;
+}
+
+/* =========================
+   PLAYER
+========================= */
+
+.player {
+    position: absolute;
+
+    left: 12%;
+    top: 70%;
+
+    width: 30px;
+    height: 40px;
+
+    z-index: 5;
+
+    filter: drop-shadow(0 0 10px #00e5ff);
+}
+
+.player-head {
+    width: 14px;
+    height: 14px;
+
+    margin: auto;
+
+    border-radius: 50%;
+
+    background: #d8faff;
+}
+
+.player-body {
+    width: 20px;
+    height: 22px;
+
+    margin: 3px auto;
+
+    border-radius: 6px;
+
+    background: #00e5ff;
+}
+
+/* =========================
+   ENEMY
+========================= */
+
+.enemy {
+    position: absolute;
+
+    left: 70%;
+    top: 25%;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #ff304f;
+
+    z-index: 5;
+
+    box-shadow:
+        0 0 15px #ff304f,
+        0 0 40px rgba(255, 48, 79, 0.45);
+
+    animation: enemyPulse 1s infinite;
+}
+
+.enemy-eye {
+    position: absolute;
+
+    width: 10px;
+    height: 10px;
+
+    background: white;
+    border-radius: 50%;
+
+    top: 9px;
+    left: 14px;
+}
+
+@keyframes enemyPulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* =========================
+   EXIT
+========================= */
+
+.exit {
+    position: absolute;
+
+    right: 8%;
+    bottom: 12%;
+
+    padding: 12px 18px;
+
+    border: 2px solid #38ff88;
+    border-radius: 8px;
+
+    color: #38ff88;
+
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 2px;
+
+    background: rgba(56, 255, 136, 0.05);
+
+    box-shadow:
+        0 0 15px rgba(56, 255, 136, 0.3),
+        inset 0 0 15px rgba(56, 255, 136, 0.05);
+}
+
+/* =========================
+   CONTROLS
+========================= */
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+
+    padding-top: 20px;
+}
+
+.controls div {
+    min-width: 85px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.controls span {
+    padding: 7px 12px;
+
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+
+    background: rgba(255,255,255,0.04);
+
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.controls small {
+    color: #69758d;
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+
+    .hud {
+        padding: 0 18px;
+    }
+
+    .stats {
+        gap: 15px;
+    }
+
+    .game-area {
+        padding: 18px;
+    }
+
+    .controls {
+        gap: 8px;
+    }
+
+    .controls div {
+        min-width: 60px;
+    }
+}
+/* =========================
+   ESCAPEX MAZE
+========================= */
+
+.maze {
+    position: absolute;
+
+    inset: 20px;
+
+    display: grid;
+
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+
+    background: #05080d;
+
+    border: 2px solid rgba(0, 229, 255, 0.15);
+
+    box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.8);
+}
+
+.cell {
+    position: relative;
+}
+
+.wall {
+    background:
+        linear-gradient(
+            135deg,
+            #182333,
+            #0c131e
+        );
+
+    border: 1px solid rgba(255, 255, 255, 0.035);
+
+    box-shadow:
+        inset 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+.path {
+    background: #070b12;
+}
+
+/* Subtle floor grid */
+
+.path::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    border: 1px solid rgba(255, 255, 255, 0.015);
+}
