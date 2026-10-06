@@ -2,99 +2,369 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EscapeX</title>
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    >
+
+    <meta
+        name="description"
+        content="EscapeX — The Hunt Begins."
+    >
+
+    <title>EscapeX — The Hunt Begins</title>
+
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
 
-    <div class="game-container">
+    <!-- =========================================================
+         BOOT / LOADING SCREEN
+         ========================================================= -->
 
-        <header class="hud">
-            <div class="logo">ESCAPE<span>X</span></div>
+    <div id="boot-screen" class="boot-screen">
 
-            <div class="stats">
-                <div>
-                    <small>TIME</small>
-                    <strong id="timer">00:00</strong>
-                </div>
+        <div class="boot-background"></div>
 
-                <div>
-                    <small>LEVEL</small>
-                    <strong id="level">01</strong>
-                </div>
+        <div class="boot-content">
 
-                <div>
-                    <small>STATUS</small>
-                    <strong id="status">READY</strong>
-                </div>
-            </div>
-        </header>
-
-        <main class="game-area">
-
-            <div class="game-header">
-                <div>
-                    <h1>ESCAPE THE HUNT</h1>
-                    <p>Reach the exit before the AI catches you.</p>
-                </div>
-
-                <div class="ai-status">
-                    <span class="status-dot"></span>
-                    AI ONLINE
-                </div>
+            <div class="boot-brand">
+                <span class="boot-x">X</span>
+                <span>Escape-x<span>
             </div>
 
-            <div id="game-board" class="game-board">
+            <div class="boot-line"></div>
 
-                <div class="player">
-                    <div class="player-head"></div>
-                    <div class="player-body"></div>
+
+            <h1 class="boot-title">
+                THE HUNT<br>
+                <span>BEGINS.</span>
+            </h1>
+
+            <div class="boot-loader">
+
+                <div class="boot-loader-track">
+                    <div
+                        id="boot-progress"
+                        class="boot-loader-progress"
+                    ></div>
                 </div>
 
-                <div class="enemy">
-                    <div class="enemy-eye"></div>
-                </div>
+                <div class="boot-loader-meta">
+                    <span id="boot-status">
+                        INITIALIZING ESCAPEX
+                    </span>
 
-                <div class="exit">
-                    EXIT
+                    <span id="boot-percent">
+                        0%
+                    </span>
                 </div>
 
             </div>
 
-            <div class="controls">
+            <button
+                id="enter-button"
+                class="enter-button"
+                type="button"
+            >
+                Let's Begin
+            </button>
 
-                <div>
-                    <span>W A S D</span>
-                    <small>MOVE</small>
-                </div>
+        </div>
 
-                <div>
-                    <span>SPACE</span>
-                    <small>JUMP</small>
-                </div>
+        <div class="boot-corner boot-corner-top">
+            01
+        </div>
 
-                <div>
-                    <span>C</span>
-                    <small>CROUCH</small>
-                </div>
-
-                <div>
-                    <span>SHIFT</span>
-                    <small>SPRINT</small>
-                </div>
-
-                <div>
-                    <span>P</span>
-                    <small>PAUSE</small>
-                </div>
-
-            </div>
-
-        </main>
+        <div class="boot-corner boot-corner-bottom">
+            ESCAPE-X
+        </div>
 
     </div>
+
+
+    <!-- =========================================================
+         GAME
+         ========================================================= -->
+
+    <main
+        id="game-screen"
+        class="game-screen hidden"
+    >
+
+        <!-- TOP HUD -->
+
+        <header class="game-hud">
+
+            <div class="hud-brand">
+                <div class="hud-mark">X</div>
+
+                <div class="hud-brand-text">
+                    <strong>ESCAPE-X</strong>
+                    <span>THE HUNT</span>
+                </div>
+            </div>
+
+
+            <div class="hud-level">
+
+                <span class="hud-kicker">
+                    CURRENT LEVEL
+                </span>
+
+                <strong id="level-number">
+                    01
+                </strong>
+
+                <span
+                    id="level-name"
+                    class="hud-level-name"
+                >
+                    AWAKENING
+                </span>
+
+            </div>
+
+
+            <div class="hud-right">
+
+                <div class="hud-stat">
+
+                    <span>TIME</span>
+
+                    <strong id="timer">
+                        00:00
+                    </strong>
+
+                </div>
+
+
+                <div class="hud-stat">
+
+                    <span>STATUS</span>
+
+                    <strong
+                        id="status"
+                        class="status-ready"
+                    >
+                        READY
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- GAME AREA -->
+
+        <section class="game-area">
+
+            <div class="game-top-info">
+
+                <div>
+                    <span id="level-subtitle">
+                        THE HUNT BEGINS
+                    </span>
+                </div>
+
+                <div class="engine-status">
+                    <span class="engine-dot"></span>
+                    BFS ACTIVE
+                </div>
+
+            </div>
+
+
+            <!-- MAZE -->
+
+            <div
+                id="game-board"
+                class="game-board"
+                aria-label="EscapeX maze"
+            ></div>
+
+
+            <div class="game-bottom-info">
+
+                <div class="game-hint">
+                    FIND THE EXIT
+                </div>
+
+                <div class="game-controls-hint">
+                    WASD / ARROWS &nbsp;·&nbsp; P PAUSE &nbsp;·&nbsp; F FULLSCREEN
+                </div>
+
+                <div class="game-level-counter">
+                    <span id="bottom-level">
+                        01
+                    </span>
+                    <span>/ 15</span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         LEVEL INTRO
+         ========================================================= -->
+
+    <div
+        id="level-intro"
+        class="cinematic-overlay level-intro"
+    >
+
+        <div class="cinematic-glow"></div>
+
+        <div class="cinematic-content">
+
+            <div class="cinematic-small">
+                ESCAPEX
+            </div>
+
+            <div
+                id="intro-level"
+                class="cinematic-title"
+            >
+                LEVEL 01
+            </div>
+
+            <div
+                id="intro-name"
+                class="cinematic-name"
+            >
+                AWAKENING
+            </div>
+
+            <div
+                id="intro-subtitle"
+                class="cinematic-subtitle"
+            >
+                THE HUNT BEGINS
+            </div>
+
+            <div class="cinematic-line"></div>
+
+            <div class="cinematic-system">
+                HUNTER INITIALIZING
+                <span>·</span>
+                BFS PATHFINDING
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         DANGER
+         ========================================================= -->
+
+    <div
+        id="danger-overlay"
+        class="danger-overlay"
+    >
+
+        <div class="danger-content">
+
+            <div class="danger-small">
+                PROXIMITY WARNING
+            </div>
+
+            <div
+                id="danger-text"
+                class="danger-title"
+            >
+                RUN
+            </div>
+
+            <div class="danger-description">
+                THE HUNTER IS CLOSING IN
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         PAUSE
+         ========================================================= -->
+
+    <div
+        id="pause-overlay"
+        class="pause-overlay"
+    >
+
+        <div class="pause-content">
+
+            <div class="pause-small">
+                ESCAPEX
+            </div>
+
+            <div class="pause-title">
+                PAUSED
+            </div>
+
+            <div class="pause-description">
+                PRESS P OR ESC TO CONTINUE
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         RESULT
+         ========================================================= -->
+
+    <div
+        id="result-overlay"
+        class="result-overlay"
+    >
+
+        <div class="result-content">
+
+            <div
+                id="result-eyebrow"
+                class="result-eyebrow"
+            >
+                ESCAPEX
+            </div>
+
+            <div
+                id="result-title"
+                class="result-title"
+            >
+                CAUGHT.
+            </div>
+
+            <div
+                id="result-subtitle"
+                class="result-subtitle"
+            >
+                THE HUNT CONTINUES.
+            </div>
+
+            <div
+                id="result-level"
+                class="result-level"
+            >
+                LEVEL 01
+            </div>
+
+        </div>
+
+    </div>
+
 
     <script src="js/game.js"></script>
 
