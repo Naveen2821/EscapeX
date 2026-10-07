@@ -315,7 +315,7 @@ The visual nature of the project makes the AI behavior easy to understand and de
 
 ---
 
-##Team Members
+## Team Members
 
 K Naveen Nayak - Team Lead https://github.com/Naveen2821
 
