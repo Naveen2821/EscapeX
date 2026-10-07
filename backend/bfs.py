@@ -1,12 +1,12 @@
 """Breadth-first pathfinding for EscapeX mazes."""
 
+
 from collections import deque
 from collections.abc import Sequence
 from typing import TypeAlias
 
 Position: TypeAlias = tuple[int, int]
 Grid: TypeAlias = Sequence[Sequence[int]]
-
 
 def _position(value: object) -> Position | None:
     """Return a normalized position, or None for malformed input."""
@@ -24,6 +24,7 @@ def _position(value: object) -> Position | None:
     return row, col
 
 
+#This bfs
 def _valid_grid(maze: object) -> tuple[int, int] | None:
     if not isinstance(maze, Sequence) or isinstance(maze, (str, bytes)) or not maze:
         return None

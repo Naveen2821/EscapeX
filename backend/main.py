@@ -112,3 +112,5 @@ def enemy_next_move(request: SessionRequest):
 def restart_game(request: SessionRequest):
     _state_or_404(request.session_id)
     return games.restart(request.session_id).as_dict()
+
+
