@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from .game import LEVELS, GameManager
 
 app = FastAPI(title="EscapeX", version="1.0.0")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,6 +15,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 games = GameManager()
 
 
@@ -34,25 +36,51 @@ def _state_or_404(session_id: str):
     try:
         return games.get(session_id)
     except KeyError as exc:
-        raise HTTPException(status_code=404, detail="Unknown game session") from exc
+        raise HTTPException(
+            status_code=404,
+            detail="Unknown game session",
+        ) from exc
 
 
 @app.get("/")
 def home():
-    return {"game": "EscapeX", "status": "online", "message": "EscapeX backend is running!"}
+    return {
+        "game": "EscapeX",
+        "status": "online",
+        "message": "EscapeX backend is running!",
+    }
 
 
 @app.get("/api/levels")
 def levels():
-    return [{key: value for key, value in level.items() if key not in {"seed", "extra_openings"}} for level in LEVELS]
+    return [
+        {
+            key: value
+            for key, value in level.items()
+            if key not in {"seed", "extra_openings"}
+        }
+        for level in LEVELS
+    ]
 
 
 @app.get("/api/levels/{level_number}")
 def level_details(level_number: int):
     if not 1 <= level_number <= len(LEVELS):
-        raise HTTPException(status_code=404, detail="Level must be between 1 and 15")
+        raise HTTPException(
+            status_code=404,
+            detail="Level must be between 1 and 15",
+        )
+
     level = LEVELS[level_number - 1]
-    return {"level": level_number, **{key: value for key, value in level.items() if key not in {"seed", "extra_openings"}}}
+
+    return {
+        "level": level_number,
+        **{
+            key: value
+            for key, value in level.items()
+            if key not in {"seed", "extra_openings"}
+        },
+    }
 
 
 @app.post("/api/game/start")
@@ -63,8 +91,13 @@ def start_game(request: StartRequest):
 @app.post("/api/game/move")
 def move_player(request: MoveRequest):
     _state_or_404(request.session_id)
+
     try:
-        return games.move_player(request.session_id, request.row_delta, request.col_delta).as_dict()
+        return games.move_player(
+            request.session_id,
+            request.row_delta,
+            request.col_delta,
+        ).as_dict()
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
