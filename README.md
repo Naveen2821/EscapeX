@@ -338,4 +338,4 @@ Reva University, Bengaluru.
 
 > **Can you escape before the AI catches you?**
 
-**EscapeX — Where every move matters.** 🎮🤖
+**EscapeX — Where every move matters.**
