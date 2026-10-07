@@ -326,6 +326,7 @@ Prajwal - Backend/modifing https://github.com/prajwalmeti25-oss
 M A Rihan - Frontend/Ui https://github.com/Rihan72
 
 Manoj L E - Presentation/testing https://github.com/Manoj-LE
+
 ---
 
 ## Project Highlight
