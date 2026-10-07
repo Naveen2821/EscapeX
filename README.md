@@ -315,23 +315,17 @@ The visual nature of the project makes the AI behavior easy to understand and de
 
 ---
 
-## Author
+## Team Members
 
-**Manoj L E**
+K Naveen Nayak - Team Lead https://github.com/Naveen2821
 
-B.Tech — Artificial Intelligence & Data Science
-Reva University, Bengaluru.
+Manoj L E - Presentation/testing https://github.com/Manoj-LE
 
-### Areas of Interest
+Prajwal - Backend/modifing https://github.com/prajwalmeti25-oss
 
-* Artificial Intelligence
-* Machine Learning
-* Data Structures & Algorithms
-* Competitive Programming
-* Data Analysis
-* IoT
-* Software Development
+M A Rihan - Frontend/Ui https://github.com/Rihan72
 
+Manoj L E - Presentation/testing https://github.com/Manoj-LE
 ---
 
 ## Project Highlight
