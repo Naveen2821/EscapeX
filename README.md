@@ -317,16 +317,13 @@ The visual nature of the project makes the AI behavior easy to understand and de
 
 ## Team Members
 
-K Naveen Nayak - Team Lead https://github.com/Naveen2821
-
-Manoj L E - Presentation/testing https://github.com/Manoj-LE
+K Naveen Nayak - Team Lead/BFS coding game Tech https://github.com/Naveen2821
 
 Prajwal - Backend/modifing https://github.com/prajwalmeti25-oss
 
 M A Rihan - Frontend/Ui https://github.com/Rihan72
 
-Manoj L E - Presentation/testing https://github.com/Manoj-LE
-
+Manoj L E - Presentation/testing https://github.com/Manoj-
 ---
 
 ## Project Highlight
