@@ -89,6 +89,44 @@
          GAME
          ========================================================= -->
 
+    <div
+        id="level-menu"
+        class="level-menu hidden"
+    >
+
+        <div class="level-menu-panel">
+
+            <div class="level-menu-header">
+
+                <div>
+                    <div class="level-menu-kicker">
+                        ESCAPEX
+                    </div>
+
+                    <h2>
+                        LEVEL SELECT
+                    </h2>
+                </div>
+
+                <button
+                    id="unlock-all-button"
+                    class="menu-action"
+                    type="button"
+                >
+                    UNLOCK ALL
+                </button>
+
+            </div>
+
+            <div
+                id="level-menu-grid"
+                class="level-menu-grid"
+            ></div>
+
+        </div>
+
+    </div>
+
     <main
         id="game-screen"
         class="game-screen hidden"
@@ -140,30 +178,56 @@
 
                 </div>
 
-                <div class="hud-stat hud-lives-wrap">
+                <div class="hud-stat">
 
-                    <span>LIVES</span>
+                    <span>MOVES</span>
 
-                    <strong
-                        id="lives-display"
-                        aria-live="polite"
-                        aria-label="3 lives remaining"
-                    >
-                        3
+                    <strong id="moves">
+                        0
                     </strong>
 
                 </div>
+
+                <div class="hud-stat">
+
+                    <span>BEST</span>
+
+                    <strong id="best-moves">
+                        --
+                    </strong>
+
+                </div>
+
+                <div class="hud-lives-wrap">
+
+                    <span class="hud-kicker">LIVES</span>
+
+                    <div
+                        id="lives-display"
+                        class="hud-lives"
+                        aria-live="polite"
+                    >
+                        ❤️ ❤️ ❤️
+                    </div>
+
+                </div>
+
+                <button
+                    id="level-menu-button"
+                    class="hud-menu-button"
+                    type="button"
+                >
+                    LEVELS
+                </button>
 
                 <button
                     id="sound-toggle"
                     class="hud-sound-button"
                     type="button"
                     aria-label="Mute sound"
-                    aria-pressed="false"
                 >
                     🔊
                 </button>
-
 
                 <div class="hud-stat">
 
@@ -219,7 +283,7 @@
                 </div>
 
                 <div class="game-controls-hint">
-                    WASD / ARROWS &nbsp;·&nbsp; P PAUSE &nbsp;·&nbsp; F FULLSCREEN
+                    WASD / ARROWS &nbsp;·&nbsp; P PAUSE &nbsp;·&nbsp; M MENU &nbsp;·&nbsp; F FULLSCREEN
                 </div>
 
                 <div class="game-level-counter">
