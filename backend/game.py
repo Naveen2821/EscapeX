@@ -45,6 +45,8 @@ def _generate_maze(rows: int, cols: int, seed: int, extra_openings: int) -> list
         grid[row + dr][col + dc] = 0
         stack.append((row + dr, col + dc))
 
+
+
     candidates = []
     for row in range(1, rows - 1):
         for col in range(1, cols - 1):
