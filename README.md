@@ -315,9 +315,11 @@ The visual nature of the project makes the AI behavior easy to understand and de
 
 ---
 
-## Author
-
-**Manoj L E**
+##Team Members ##
+K Naveen Nayak - Team Lead
+Prajwal - Backend/modifing
+M A Rihan - Frontend/Ui
+Manoj L E - Presentation/testing
 
 B.Tech — Artificial Intelligence & Data Science
 Reva University, Bengaluru.
