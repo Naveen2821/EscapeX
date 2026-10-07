@@ -86,6 +86,15 @@ const resultSubtitle =
 const resultLevel =
     document.getElementById("result-level");
 
+const livesDisplay =
+    document.getElementById("lives-display");
+
+const soundToggle =
+    document.getElementById("sound-toggle");
+
+const SOUND_STORAGE_KEY =
+    "escapex-sound-muted";
+
 
 /* =========================================================
    LEVEL DATA
@@ -294,7 +303,17 @@ const state = {
 
     paused: false,
 
+    lives: 3,
+
+    soundMuted: false,
+
+    audioContext: null,
+
+    audioUnlocked: false,
+
     levelStartedAt: 0,
+
+    elapsedBeforeCatch: 0,
 
     timerInterval: null,
 
@@ -1030,13 +1049,14 @@ function renderMaze() {
    TIMER
    ========================================================= */
 
-function startTimer() {
+function startTimer(preserveElapsed = false) {
 
     stopTimer();
 
 
     state.levelStartedAt =
-        Date.now();
+        Date.now() -
+        (preserveElapsed ? state.elapsedBeforeCatch : 0);
 
 
     state.timerInterval =
@@ -1120,6 +1140,243 @@ function setStatus(
 }
 
 
+function updateLivesDisplay() {
+
+    if (!livesDisplay) {
+        return;
+    }
+
+    livesDisplay.textContent =
+        String(state.lives);
+
+    livesDisplay.setAttribute(
+        "aria-label",
+        `${state.lives} ${state.lives === 1 ? "life" : "lives"} remaining`
+    );
+
+    livesDisplay.classList.toggle(
+        "low",
+        state.lives <= 1
+    );
+}
+
+
+function loadMutePreference() {
+
+    try {
+
+        return localStorage.getItem(SOUND_STORAGE_KEY) === "true";
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to read sound preference:",
+            error
+        );
+
+        return false;
+    }
+}
+
+
+function saveMutePreference() {
+
+    try {
+
+        localStorage.setItem(
+            SOUND_STORAGE_KEY,
+            String(state.soundMuted)
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to save sound preference:",
+            error
+        );
+    }
+}
+
+
+function updateSoundToggle() {
+
+    soundToggle.textContent =
+        state.soundMuted ? "🔇" : "🔊";
+
+    soundToggle.classList.toggle(
+        "muted",
+        state.soundMuted
+    );
+
+    soundToggle.setAttribute(
+        "aria-label",
+        state.soundMuted ? "Unmute sound" : "Mute sound"
+    );
+
+    soundToggle.setAttribute(
+        "aria-pressed",
+        String(state.soundMuted)
+    );
+}
+
+
+function unlockAudio() {
+
+    if (state.audioUnlocked) {
+        return;
+    }
+
+    const AudioCtor =
+        window.AudioContext ||
+        window.webkitAudioContext;
+
+    if (!AudioCtor) {
+        return;
+    }
+
+    try {
+
+        state.audioContext =
+            new AudioCtor();
+
+        state.audioUnlocked = true;
+
+        if (state.audioContext.state === "suspended") {
+
+            const resumeResult =
+                state.audioContext.resume();
+
+            if (resumeResult && typeof resumeResult.catch === "function") {
+
+                resumeResult.catch(error => {
+
+                    console.warn(
+                        "Unable to resume audio:",
+                        error
+                    );
+                });
+            }
+        }
+
+    } catch (error) {
+
+        state.audioContext = null;
+        state.audioUnlocked = false;
+
+        console.warn(
+            "Audio is unavailable:",
+            error
+        );
+    }
+}
+
+
+function playSfx(type) {
+
+    if (state.soundMuted) {
+        return;
+    }
+
+    try {
+
+        unlockAudio();
+
+        if (!state.audioContext || !state.audioUnlocked) {
+            return;
+        }
+
+        const context =
+            state.audioContext;
+
+        const oscillator =
+            context.createOscillator();
+
+        const gainNode =
+            context.createGain();
+
+        const sounds = {
+            caught: {
+                frequency: 150,
+                duration: 0.20,
+                wave: "sawtooth",
+                volume: 0.045
+            },
+            life: {
+                frequency: 210,
+                duration: 0.13,
+                wave: "square",
+                volume: 0.035
+            },
+            win: {
+                frequency: 520,
+                duration: 0.28,
+                wave: "triangle",
+                volume: 0.045
+            },
+            gameover: {
+                frequency: 105,
+                duration: 0.42,
+                wave: "sawtooth",
+                volume: 0.05
+            },
+            move: {
+                frequency: 260,
+                duration: 0.045,
+                wave: "triangle",
+                volume: 0.018
+            },
+            button: {
+                frequency: 420,
+                duration: 0.055,
+                wave: "square",
+                volume: 0.025
+            }
+        };
+
+        const sound =
+            sounds[type] || sounds.button;
+
+        oscillator.type =
+            sound.wave;
+
+        oscillator.frequency.setValueAtTime(
+            sound.frequency,
+            context.currentTime
+        );
+
+        gainNode.gain.setValueAtTime(
+            0.0001,
+            context.currentTime
+        );
+
+        gainNode.gain.exponentialRampToValueAtTime(
+            sound.volume,
+            context.currentTime + 0.01
+        );
+
+        gainNode.gain.exponentialRampToValueAtTime(
+            0.0001,
+            context.currentTime + sound.duration
+        );
+
+        oscillator.connect(gainNode);
+        gainNode.connect(context.destination);
+
+        oscillator.start();
+        oscillator.stop(
+            context.currentTime + sound.duration
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to play sound:",
+            error
+        );
+    }
+}
+
+
 /* =========================================================
    PLAYER MOVEMENT
    ========================================================= */
@@ -1162,6 +1419,8 @@ function movePlayer(
 
     state.player =
         next;
+
+    playSfx("move");
 
 
     positionEntity(
@@ -1642,6 +1901,12 @@ function startLevel(
     stopEnemy();
     stopTimer();
 
+    clearTimeout(
+        state.resultTimer
+    );
+
+    state.resultTimer = null;
+
 
     clearTimeout(
         state.introTimer
@@ -1689,6 +1954,12 @@ function startLevel(
 
     state.enemy =
         findEnemyStart();
+
+    state.lives = 3;
+
+    state.elapsedBeforeCatch = 0;
+
+    updateLivesDisplay();
 
 
     state.paused = false;
@@ -1872,6 +2143,54 @@ function caught() {
 
     stopTimer();
 
+    state.elapsedBeforeCatch =
+        Math.max(
+            0,
+            Date.now() - state.levelStartedAt
+        );
+
+    state.lives =
+        Math.max(
+            0,
+            state.lives - 1
+        );
+
+    updateLivesDisplay();
+    playSfx("caught");
+    playSfx("life");
+
+
+    if (state.lives === 0) {
+
+        setStatus(
+            "GAME OVER",
+            "status-danger"
+        );
+
+        resultEyebrow.textContent =
+            "ESCAPEX";
+
+        resultTitle.textContent =
+            "GAME OVER";
+
+        resultSubtitle.textContent =
+            "THE HUNTER CAUGHT YOU.";
+
+        resultLevel.textContent =
+            "PRESS R TO RESTART";
+
+        resultOverlay.classList.add(
+            "active"
+        );
+
+        state.phase =
+            "gameover";
+
+        playSfx("gameover");
+
+        return;
+    }
+
 
     dangerOverlay.classList.remove("danger-pop")
 
@@ -1887,15 +2206,15 @@ function caught() {
 
 
     resultTitle.textContent =
-        "CAUGHT.";
+        "CAUGHT!";
 
 
     resultSubtitle.textContent =
-        "THE HUNT CONTINUES.";
+        "YOU LOST A LIFE.";
 
 
     resultLevel.textContent =
-        `RESTARTING LEVEL ${String(state.level).padStart(2, "0")}`;
+        `${state.lives} ${state.lives === 1 ? "LIFE" : "LIVES"} REMAINING`;
 
 
     resultOverlay.classList.add(
@@ -1911,12 +2230,41 @@ function caught() {
             );
 
 
-            startLevel(
-                state.level,
-                true
-            );
+            respawnPlayer();
 
         }, 1900);
+}
+
+
+function respawnPlayer() {
+
+    if (state.phase !== "caught") {
+        return;
+    }
+
+    state.player = {
+        row: 1,
+        col: 1
+    };
+
+    state.enemy =
+        findEnemyStart();
+
+    state.phase =
+        "playing";
+
+    state.paused = false;
+
+    renderMaze();
+
+    setStatus(
+        "HUNTING",
+        "status-safe"
+    );
+
+    startTimer(true);
+    updateDanger();
+    scheduleEnemyMove();
 }
 
 
@@ -1941,6 +2289,8 @@ function winLevel() {
     stopEnemy();
 
     stopTimer();
+
+    playSfx("win");
 
 
     dangerOverlay.classList.remove(
@@ -2351,6 +2701,24 @@ enterButton.addEventListener(
     enterGame
 );
 
+soundToggle.addEventListener(
+    "click",
+    () => {
+
+        unlockAudio();
+
+        state.soundMuted =
+            !state.soundMuted;
+
+        saveMutePreference();
+        updateSoundToggle();
+
+        if (!state.soundMuted) {
+            playSfx("button");
+        }
+    }
+);
+
 
 /* =========================================================
    ENTER WITH KEY
@@ -2419,6 +2787,12 @@ document.addEventListener(
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        state.soundMuted =
+            loadMutePreference();
+
+        updateSoundToggle();
+        updateLivesDisplay();
 
         runBootAnimation();
 

@@ -728,6 +728,60 @@ button {
     letter-spacing: 0.1em;
 }
 
+.hud-lives-wrap strong {
+
+    color: rgba(255,255,255,0.85);
+}
+
+.hud-lives-wrap.low strong {
+
+    color: var(--enemy);
+}
+
+.hud-sound-button {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+
+    padding: 0;
+
+    border: 1px solid rgba(255,255,255,0.1);
+
+    border-radius: 50%;
+
+    background: rgba(255,255,255,0.02);
+
+    color: rgba(255,255,255,0.85);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease;
+}
+
+.hud-sound-button:hover {
+
+    border-color: rgba(255,255,255,0.2);
+
+    background: rgba(255,255,255,0.04);
+}
+
+.hud-sound-button.muted {
+
+    color: rgba(255,255,255,0.55);
+
+    border-color: rgba(255,255,255,0.08);
+}
+
 .status-ready {
 
     color: rgba(255,255,255,0.55);
@@ -2091,6 +2145,8 @@ button {
     .hud-right {
 
         gap: 12px;
+
+        flex-wrap: wrap;
     }
 
     .game-area {
@@ -2120,6 +2176,22 @@ button {
 
 
 @media (max-width: 600px) {
+
+    .hud-right {
+
+        gap: 5px 8px;
+    }
+
+    .hud-lives-wrap {
+
+        min-width: 34px;
+    }
+
+    .hud-sound-button {
+
+        width: 30px;
+        height: 30px;
+    }
 
     .hud-brand-text {
 
