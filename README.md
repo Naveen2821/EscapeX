@@ -315,7 +315,8 @@ The visual nature of the project makes the AI behavior easy to understand and de
 
 ---
 
-##Team Members ##
+##Team Members
+
 K Naveen Nayak - Team Lead
 Prajwal - Backend/modifing
 M A Rihan - Frontend/Ui
@@ -323,18 +324,6 @@ Manoj L E - Presentation/testing
 
 B.Tech — Artificial Intelligence & Data Science
 Reva University, Bengaluru.
-
-### Areas of Interest
-
-* Artificial Intelligence
-* Machine Learning
-* Data Structures & Algorithms
-* Competitive Programming
-* Data Analysis
-* IoT
-* Software Development
-
----
 
 ## Project Highlight
 
